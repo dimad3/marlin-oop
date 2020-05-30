@@ -1,6 +1,8 @@
 <?php
 require_once 'Database.php';
+//Database::getinstance();
 
-Database::getinstance();
+$users = Database::getinstance()->query
+("SELECT * FROM `users` WHERE username = IN (?,?)", ['John Doe', 'Jane Koe']);
 
-Database::getinstance();
+var_dump($users);
