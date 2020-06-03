@@ -6,19 +6,21 @@ class Database {
 private static $instance = null; // by default $instance is null
 private $pdo, $query, $error = false, $results, $count;
 
-private function __construct() {
+private function __construct()
+{
     try {
         $this->pdo = new PDO('mysql:host=localhost; dbname=test; charset=utf8',
         'root',
         '');
-        echo 'ok';
+        // echo 'ok';
     } catch (PDOException $exception) {
         die($exception->getMessage());
     }
 }
 
 
-public static function getInstance() {
+public static function getInstance()
+{
     // if $instance do not exist, create it
     if(!isset(self::$instance)) {
         self::$instance = new Database;
@@ -174,6 +176,99 @@ public function action($action, $table, $where = [])
             return $this;
         }
     }
+}
+
+
+/* L#7 - Returns TRUE if insert is successful or FALSE on failure.
+Parameter Values:
+1) string	Required. Specifies the name of a table in which a data will be added
+2) array	Required. Specifies the array of table's fields */
+public function insert($table, $fields = [])
+{
+    $values = '';
+    
+    /* loops over the array given by `$fields`. On each iteration, the VALUE of the current element is 
+    assigned to `$field` (NEW variable` that will be used to store each item's value of the array) and
+    the internal array pointer is advanced by one (so on the next iteration, you'll be looking at the next element) */
+    foreach($fields as $field) {
+        /* On each iteration add `?,` to the string, so the string will contain as many `?,` symbols 
+        as there are elements in the array*/
+        $values .= "?,";
+    }
+    $val = rtrim($values, ',');
+    // var_dump($val);die;
+
+    /* `array_keys()` in-build function - returns an array containing the keys (numeric and string) of an array.
+    Parameters:
+    1) array -  Required. An array containing keys to return
+    2) value -  Optional. You can specify a `value`, then only the keys with this value are returned
+    3) strict - Optional. Used with the `value parameter`. Possible values:
+                true - Returns the keys with the specified value, depending on type: the number 5 is not the same as the string "5".
+                false - Default value. Not depending on type, the number 5 is the same as the string "5" */
+    $sql1 = array_keys($fields);
+    // var_dump($sql1);die;
+
+    /* `implode()` in-build function - Join array elements with a glue string.
+    Parameters:
+    1) glue -   Optional. Specifies what to put between the array elements. Default is "" (an empty string);
+    2) pieces - Required. The array to join to a string
+    Returns a string containing a string representation of all the array elements 
+    in the same order, with the glue string between each element*/
+    $sql2 = implode('`, `', array_keys($fields));
+    // var_dump($sql2);die;
+    
+    $sql = "INSERT INTO {$table} (`{$sql2}`) VALUES ({$val})";
+    // var_dump($sql);die;
+
+    // run the `query method` and after that the `error method` to check whether an error has accured
+    // if an error has accured the `$error property` of Database object will be `TRUE`
+    if(!$this->query($sql, $fields)->error()) {
+        // if the `$error property` of Database object is `FALSE`
+        return true;
+    }
+    // if the `$error property` of Database object is `TRUE`
+    return false;
+}
+
+
+/* L#8 - Returns TRUE if update is successful or FALSE on failure.
+Parameter Values:
+1) string - Required. Specifies the name of a table in which a data will be updated
+2) string - Required. Specifies the value of ID of the record
+3) array -  Required. Specifies the array of table's fields */
+public function update($table, $id, $fields = [])
+{
+    $set = '';
+
+    /* foreach (array_expression as $key => $value)
+    Loops over the array given by array_expression. On each iteration:
+    1) the value of the current element is assigned to `$value variable`
+    ($value - name of a NEW variable, that will be used to store the VALUE of each element of the array)
+    2) additionally assign the current element's key to the `$key variable` 
+    ($key - name of a NEW variable, that will be used to store the KEY of each element of the array)
+    and the internal array pointer is advanced by one (so on the next iteration, you'll be looking at the next element).
+    */
+    foreach($fields as $key => $value) {
+        $set .= "`{$key}` = ?,"; // username = ?, password = ?,
+    }
+
+    $set = rtrim($set, ','); // username = ?, password = ?
+
+    $sql = "UPDATE `{$table}` SET {$set} WHERE `id` = {$id}";
+    //var_dump($sql);die;
+
+    if(!$this->query($sql, $fields)->error()){
+        return true;
+    }
+
+    return false;
+}
+
+
+// returns the first record from a recordset
+public function first()
+{
+    return $this->results()[0];
 }
 
 }
