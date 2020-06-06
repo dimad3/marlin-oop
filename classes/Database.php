@@ -101,30 +101,32 @@ public function query($sql, $params = [])
 }
 
 
-// Returns the `error property` of `Database object`
-// we can't access PRIVATE property `error` from external page to access it use PUBLIC `error method`
+// Returns the `$error property` of `Database object`
+// we can't access PRIVATE property `$error` from external page to access it use PUBLIC `error method`
 public function error()
 {
     return $this->error;
 }
 
 
-// Returns the `results property` of `Database object`
-// we can't access PRIVATE property `results` from external page to access it use PUBLIC `results method`
+// Returns the `$results property` of `Database object`
+// we can't access PRIVATE property `$results` from external page to access it use PUBLIC `results method`
 public function results()
 {
     return $this->results;
 }
 
 
-// Returns the `count property` of `Database object`
-// we can't access PRIVATE property `count` from external page to access it use PUBLIC `count method`
+// Returns the `$count property` of `Database object`, which represents the number of rows 
+// affected by the last query statement executed.
+// we can't access PRIVATE property `$count` from external page to access it use PUBLIC `count method`
 public function count()
 {
     return $this->count;
 }
 
 
+// call the `action() method` on 
 public function get($table, $where = [])
 // `$where array` contains 3 elements: 1) criteria's field name 2) operator 3) criteria's value
 {
@@ -173,7 +175,7 @@ public function action($action, $table, $where = [])
             // set `$sql` string
             $sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
             
-            // run the `query method`
+            // call the `query method` on `Database object`
             $this->query($sql, [$value]);
             
             return $this;
