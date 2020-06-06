@@ -38,19 +38,19 @@ class Input
 }
 
 
-// L#8 04:40
-// returns string to provide it to the corresponding form's field
-// $input_value = string = the name of the form's field = the key of the one element in the $_POST array
-public static function get($field_name) 
+// L#8 04:40 - get a VALUE of a form's field after the form was submited
+// string Required. the name of the form's field = the key of the one element in the $_POST array
+// returns the VALUE of the provided field (as string)
+public static function get($fieldName) 
 {
     // check whether the form was submited using the `POST method`
-    if(isset($_POST[$field_name])) {
-        /* if it was - returns the cooresponding value of `$field_name key` 
+    if(isset($_POST[$fieldName])) {
+        /* if it was - returns the cooresponding value of `$fieldName key` 
         in the `$_POST array` (as string)
         */
-        return $_POST[$field_name];
-    } else if(isset($_GET[$field_name])) {
-        return $_GET[$field_name];
+        return $_POST[$fieldName];
+    } else if(isset($_GET[$fieldName])) {
+        return $_GET[$fieldName];
     }
 
     return '';

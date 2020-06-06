@@ -126,7 +126,7 @@ public function count()
 }
 
 
-// call the `action() method` on 
+// call the `action() method` on `Database object`
 public function get($table, $where = [])
 // `$where array` contains 3 elements: 1) criteria's field name 2) operator 3) criteria's value
 {

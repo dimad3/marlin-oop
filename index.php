@@ -1,8 +1,14 @@
 <?php
+session_start(); // L#9 9:08 - creates a session or resumes the current one
+// Create an associative array $_SESSION[] containing session variables available to the current script
+
+//var_dump($_SESSION['token']);die;
 require_once 'classes/Database.php';
 require_once 'classes/Config.php';
 require_once 'classes/Input.php';
 require_once 'classes/Validate.php';
+require_once 'classes/Token.php';
+require_once 'classes/Session.php';
 
 
 // var_dump($GLOBALS); die;
@@ -20,9 +26,13 @@ $GLOBALS['config'] = [ // in init.php
                 ]
             ]
         ]
-    ]
+    ],
 
+    'session' => [
+        'token_name' => 'token' // L#9 - new element's KEY name in the $_SESSION[] array
+    ]
 ];
+
 // echo Config::get('mysql.something.no.foo.bar'); // baz
 
 // $users = Database::getinstance()->query("SELECT * FROM `users` WHERE username = IN (?,?)", ['John Doe', 'Jane Koe']);
@@ -60,42 +70,56 @@ $GLOBALS['config'] = [ // in init.php
 // Input::exists() - check whether the form was submited (see forum)
 // Returns TRUE if it was and FALSE if it was NOT
 if (Input::exists()) { // true or false
-    $validate = new Validate();
+    
+    // L#9 05:10 - get a VALUE of a form's field after the form was submited
+    // 'token' - the name of the form's field from which to get the VALUE
+    $fieldValue = Input::get('token');
 
-    $validation = $validate->check(
-        $_POST,
-        [
-            'username' => [                 // field name
-                'required'  => true,
-                'min'       => 2,
-                'max'       => 9,
-                'unique'    => 'users'      // the name of the table
-            ],
-            
-            'password' => [                 // field name
-                'required'  => true,
-                'min'       => 3
-            ],
+    // checks whether `form's token value` exists in the `$_SESSION[] array`
+    $tokenExists = Token::check($fieldValue); // true or false
+    
+    if ($tokenExists == true) { // L#9 
+    
+        $validate = new Validate();
 
-            'password_again' => [           // field name
-                'required'  => true,
-                'matches'       => 'password' // the name of the field to compare with
+        $validation = $validate->check(
+            $_POST,
+            [
+                'username' => [                 // field name
+                    'required'  => true,
+                    'min'       => 2,
+                    'max'       => 9,
+                    'unique'    => 'users'      // the name of the table
+                ],
+                
+                'password' => [                 // field name
+                    'required'  => true,
+                    'min'       => 3
+                ],
+
+                'password_again' => [           // field name
+                    'required'  => true,
+                    'matches'   => 'password' // the name of the field to compare with
+                ]
             ]
-        ]
-    );
+        );
 
-    // $validation = Validate object
-    // check whether `$passed property` of `Validate object` is TRUE
-    if ($validation->passed()) {
-        echo 'passed';
-    } else {
-        foreach($validation->errors() as $error) {
-            // $validation->errors() - ARRAY - `$errors property` of `Validate object`
-            // $error - VALUE of each error
-            echo $error . '</br>';
+        // $validation = Validate object
+        // check whether `$passed property` of `Validate object` is TRUE
+        if ($validation->passed()) {
+            echo 'passed';
+        } else {
+            foreach($validation->errors() as $error) {
+                // $validation->errors() - ARRAY - `$errors property` of `Validate object`
+                // $error - VALUE of each error
+                echo $error . '</br>';
+            }
         }
     }
+
 }
+// var_dump(Token::generate());
+
 ?>
 
 <form action='' method='post'>
@@ -113,6 +137,15 @@ if (Input::exists()) { // true or false
         <label for='password_again'>Password again</label>
         <input type='text' name='password_again'>
     </div>
+
+    <input type='text' name='token' value=
+    '<?php 
+        // call generate method` on Token object` and set new token value to this field
+        echo Token::generate();
+    ?>'>
+    <!-- Most of the people do it wrong, by adding `token stored in the session`. That is not 
+    the correct method, use the `token variable` instead of `token stored in the session.` 
+    https://codingcyber.org/secure-php-forms-csrf-tokens-7286/ -->
 
     <div class='field'>
         <button type='submit'>Submit</button>
