@@ -9,6 +9,7 @@ require_once 'classes/Input.php';
 require_once 'classes/Validate.php';
 require_once 'classes/Token.php';
 require_once 'classes/Session.php';
+require_once 'classes/User.php';
 
 
 // var_dump($GLOBALS); die;
@@ -49,13 +50,13 @@ $GLOBALS['config'] = [ // in init.php
 //     }
 // }
 
-// $users = Database::getinstance()->delete('users', ['password', '=', 's']);
-
-// $newuser = Database::getinstance()->insert('users1', [
-//     'username' => 'User1',
-//     'password' => 'user'
-//     ]);
+// $newuser = Database::getinstance()->insert('users', [
+//     'username' => 'User7',
+//     'password' => 'user7'
+// ]);
 // var_dump($newuser);
+
+// $users = Database::getinstance()->delete('users', ['password', '=', 's']);
 
 // $updateduser = Database::getinstance()->update('users', 6, [
 //     'username' => 'User3',
@@ -88,7 +89,7 @@ if (Input::exists()) { // true or false
                 'username' => [                 // field name
                     'required'  => true,
                     'min'       => 2,
-                    'max'       => 9,
+                    'max'       => 12,
                     'unique'    => 'users'      // the name of the table
                 ],
                 
@@ -107,7 +108,21 @@ if (Input::exists()) { // true or false
         // $validation = Validate object
         // check whether `$passed property` of `Validate object` is TRUE
         if ($validation->passed()) {
-            echo 'passed';
+            
+            $user = new User;
+            
+            $user = $user->create([
+                'username' => Input::get('username'),
+                'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT)
+            ]);
+            
+            // unset($_POST); // delete $_POST from Superglobals
+            $_POST = array();
+
+            // set new element in the $_SESSION[] array
+            Session::flash('success', 'register success');
+            // echo 'passed';
+            // header('location: test.php');
         } else {
             foreach($validation->errors() as $error) {
                 // $validation->errors() - ARRAY - `$errors property` of `Validate object`
@@ -118,11 +133,15 @@ if (Input::exists()) { // true or false
     }
 
 }
-// var_dump(Token::generate());
 
 ?>
 
 <form action='' method='post'>
+    <?php 
+        // display a flash msg
+        echo Session::flash('success'); 
+    ?>
+
     <div class='field'>
         <label for='username'>Username</label>
         <input type='text' name='username' value='<?php echo Input::get('username') ?>'>

@@ -24,10 +24,10 @@ public static function generate()
                         TRUE - Raw 16 character binary format
                         FALSE - Default. 32 character hex number
     https://www.w3schools.com/php/func_string_md5.asp */
-    $hash = md5($random_string);
+    $token = md5($random_string);
 
     // call `put method` on `Session object`
-    return Session::put($keyName, $hash);
+    return Session::put($keyName, $token);
 }
 
 
