@@ -43,7 +43,7 @@ public static function get($keyName)
 
 /* L#10 - returns flash message as string 
 or set new element ('flashName' => 'flash message') in the $_SESSION[] array
-Parametrs:
+Parameters:
 1) $keyName string  Required. new element's KEY name (flash name (id))
 2) $value string    Optional. new element's VALUE (flash message)
 */

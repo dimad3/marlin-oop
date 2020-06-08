@@ -77,6 +77,8 @@ public function check($source, $fields_to_check = [])
                     break;
 
                     case 'email':
+                        // filter_var - Check if $email is a valid email address
+                        // Returns the filtered data on success, FALSE on failure
                         if(!filter_var($field_value, FILTER_VALIDATE_EMAIL)) {
                             $this->addError("{$field_name} is not an email");
                         }
