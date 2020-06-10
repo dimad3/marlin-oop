@@ -16,7 +16,8 @@ public function __construct() {
 1) $source - array with elements from `$POST array`
 2) $fields_to_check - multidimentional array with elements that represents form's fields' names 
 (each field as array's element's KEY) to be checked and rules (as array of VALUES) for each form's field.
-`$fields_to_check array` was MANNUALLY set as 2nd parameter when `check method` was called in index.php
+`$fields_to_check array` is MANNUALLY set as 2nd parameter when `check method` is called
+Returns `Validate object`
 */
 public function check($source, $fields_to_check = [])
 {

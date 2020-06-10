@@ -6,8 +6,8 @@ class Token
 //L9 4:15 - create new token string and add it as new element in $_SESSION[] array
 public static function generate() 
 {
-    // set the `$keyName variable` by calling `get method` on `Config object`
-    $keyName = Config::get('session.token_name');
+    // set the `$sessionKey variable` by calling `get method` on `Config object`
+    $sessionKey = Config::get('session.token');
     
 
     /* uniqid() - generates a unique ID based on the microtime (the current time in microseconds).
@@ -27,7 +27,7 @@ public static function generate()
     $token = md5($random_string);
 
     // call `put method` on `Session object`
-    return Session::put($keyName, $token);
+    return Session::put($sessionKey, $token);
 }
 
 
@@ -36,13 +36,13 @@ Parametrs: string Required - token value to be checked
 Returns true or false */
 public static function check($token) 
 {
-    // set the `$keyName variable` by calling `get method` on `Config object`
-    $keyName = Config::get('session.token_name');
+    // set the `$sessionKey variable` by calling `get method` on `Config object`
+    $sessionKey = Config::get('session.token'); // returns string
 
-    /* checks whether `token_name` exists in the `$_SESSION[] array` AND
+    /* checks whether `token` KEY exists in the `$_SESSION[] array` AND
     `form's token value` is equal to `token VALUE` in the `$_SESSION[] array` */
-    if(Session::exists($keyName) && $token == Session::get($keyName)) {
-        Session::delete($keyName);
+    if(Session::exists($sessionKey) && $token == Session::get($sessionKey)) {
+        Session::delete($sessionKey);
         return true;
     }
 

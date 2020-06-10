@@ -1,4 +1,5 @@
 <?php
+require_once 'init.php';
 // echo Config::get('mysql.something.no.foo.bar'); // baz
 
 // $users = Database::getinstance()->query("SELECT * FROM `users` WHERE username = IN (?,?)", ['John Doe', 'Jane Koe']);
@@ -35,4 +36,14 @@
 // Redirect::to('test.php');
 // Redirect::to(404);
 
-echo 123;
+echo 123 . '<br>';
+
+var_dump(Session::get(Config::get('session.userId')));
+var_dump($_SESSION);
+
+// move_uploaded_file(123123123, 'uploads/image.jpg');
+
+
+
+// $user = new User;
+// $user->login('rahim@marlindev.ru', '123123');

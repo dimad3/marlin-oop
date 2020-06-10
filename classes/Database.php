@@ -4,7 +4,7 @@ class Database {
 
 // L#3
 private static $instance = null; // by default $instance is null
-private $pdo, $query, $error = false, $results, $count;
+private $pdo, $query, $error = false, $results /*array*/, $count /*integer*/;
 
 private function __construct()
 {
@@ -109,7 +109,7 @@ public function error()
 }
 
 
-// Returns the `$results property` of `Database object`
+// Returns ARRAY - the `$results property` of `Database object`
 // we can't access PRIVATE property `$results` from external page to access it use PUBLIC `results method`
 public function results()
 {
@@ -117,7 +117,7 @@ public function results()
 }
 
 
-// Returns the `$count property` of `Database object`, which represents the number of rows 
+// Returns INTEGER - the `$count property` of `Database object`, which represents the number of rows 
 // affected by the last query statement executed.
 // we can't access PRIVATE property `$count` from external page to access it use PUBLIC `count method`
 public function count()
@@ -270,7 +270,7 @@ public function update($table, $id, $fields = [])
 }
 
 
-// returns the first record from a recordset
+// returns stdClass Object - the first record from a recordset
 public function first()
 {
     return $this->results()[0];

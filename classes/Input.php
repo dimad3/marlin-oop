@@ -39,9 +39,10 @@ class Input
 
 
 // L#8 04:40 - get a VALUE of a form's field after the form was submited
-// string Required. the name of the form's field = the key of the one element in the $_POST array
-// returns the VALUE of the provided field (as string)
-public static function get($fieldName) 
+// Parameters:
+// string   Required. the name of the form's field = the key of the one element in the $_POST or $_GET array
+// Returns the VALUE of the provided field (as string)
+public static function get($fieldName) // getFieldVal is better
 {
     // check whether the form was submited using the `POST method`
     if(isset($_POST[$fieldName])) {

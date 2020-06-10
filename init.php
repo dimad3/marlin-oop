@@ -30,6 +30,7 @@ $GLOBALS['config'] = [ // in init.php
     ],
 
     'session' => [
-        'token_name' => 'token' // L#9 - new element's KEY name in the $_SESSION[] array
+        'token' => 'token', // L#9 - new element's KEY name in the $_SESSION[] array (forum)
+        'userId'  => 'userId'   // L#13 - new element's KEY name in the $_SESSION[] array
     ]
 ];
