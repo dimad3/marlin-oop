@@ -18,7 +18,7 @@ if(Input::exists()) {
 
         // check whether the `$passed property` of `Validate object` is TRUE or FALSE
         if($validation->passed()) {   // Returns TRUE or FALSE
-            $user = new User;
+            $user = new User; // without parameter
 
             // call `login method` on `User Object`
             $login = $user->login(Input::get('email'), Input::get('password')); // returns boolean

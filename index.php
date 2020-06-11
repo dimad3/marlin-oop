@@ -33,13 +33,27 @@ require_once 'init.php';
 // $users = Database::getinstance()->get('users', ['password', '=', '1234']);
 // var_dump($users->first());
 
+
+// L#12 - Redirect
 // Redirect::to('test.php');
 // Redirect::to(404);
 
-echo 123 . '<br>';
 
-var_dump(Session::get(Config::get('session.userId')));
-var_dump($_SESSION);
+// L#14 - User Login
+// var_dump(Session::get(Config::get('session.userId')));
+// var_dump($_SESSION);
+
+
+// L#15 - Проверка авторизации
+$user = new User;
+
+// checks whether `$isLoggedIn property` of `User object` is true
+if ($user->isLoggedIn()) {
+    echo "Hi, {$user->data()->username}";
+    echo "<p><a href='logout.php'>Log Out</a></p>";
+} else {
+    echo "<p><a href='login.php'>Log In</a> or <a href='register.php'>Sign In</a></p>";
+}
 
 // move_uploaded_file(123123123, 'uploads/image.jpg');
 
