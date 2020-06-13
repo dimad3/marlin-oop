@@ -3,7 +3,7 @@
 class Session
 {
 
-/* L#9 4:00 - add new element in the $_SESSION[] array
+/* L#9 4:00 - ADD new element in the $_SESSION[] array
 Parametrs:
 1) $keyName string - new element's KEY name
 2) $value - new element's VALUE for corresponding new key
@@ -22,7 +22,7 @@ public static function exists($keyName) {
 }
 
 
-/* L#9 4:00 - delete element from $_SESSION[] array
+/* L#9 4:00 - REMOVE element from $_SESSION[] array
 Parametrs: string Required - key name to be deleted from the $_SESSION[] array */
 public static function delete($keyName) 
 {
@@ -32,7 +32,7 @@ public static function delete($keyName)
 }
 
 
-/* L#9 4:00 - find element in the $_SESSION[] array
+/* L#9 4:00 - find element in the $_SESSION[] global array
 Parametrs: string Required - key name to be found in the $_SESSION[] array
 Returns elements VALUE (as string) */
 public static function get($keyName) 

@@ -19,9 +19,12 @@ if(Input::exists()) {
         // check whether the `$passed property` of `Validate object` is TRUE or FALSE
         if($validation->passed()) {   // Returns TRUE or FALSE
             $user = new User; // without parameter
+            
+            // check whether `remember checkbox` is set
+            $remember = (Input::get('remember')) === 'on' ? true : false; // returns BOOLEAN
 
             // call `login method` on `User Object`
-            $login = $user->login(Input::get('email'), Input::get('password')); // returns boolean
+            $login = $user->login(Input::get('email'), Input::get('password'), $remember); // returns boolean
 
             if($login) {    // = if(isset($login)) {
                 Redirect::to('index.php');
@@ -49,7 +52,12 @@ if(Input::exists()) {
         <input type="text" name="password" >
     </div>
 
-    <input type="text" name="token" value="<?php echo Token::generate();?>">
+    <div class="field">
+        <input type="checkbox" name="remember" id="remember"> <!-- if isset checkbox returns `on` -->
+        <label for="remember">Remember me</label>
+    </div>
+
+    <input type="hidden" name="token" value="<?php echo Token::generate();?>">
     <div class="field">
         <button type="submit">Submit</button>
     </div>

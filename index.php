@@ -40,12 +40,12 @@ require_once 'init.php';
 
 
 // L#14 - User Login
-// var_dump(Session::get(Config::get('session.userId')));
+// var_dump(Session::get(Config::get('session.userKey')));
 // var_dump($_SESSION);
 
 
-// L#15 - Проверка авторизации
-$user = new User;
+// L#15-17 - Проверка авторизации + remember me
+$user = new User; // WITHOUT parameter (see constructor)!
 
 // checks whether `$isLoggedIn property` of `User object` is true
 if ($user->isLoggedIn()) {
@@ -54,6 +54,8 @@ if ($user->isLoggedIn()) {
 } else {
     echo "<p><a href='login.php'>Log In</a> or <a href='register.php'>Sign In</a></p>";
 }
+// var_dump($_SESSION);
+// echo var_dump($_COOKIE);
 
 // move_uploaded_file(123123123, 'uploads/image.jpg');
 

@@ -141,6 +141,7 @@ public function delete($table, $where = [])
 }
 
 
+// Returns Object of Database class
 public function action($action, $table, $where = [])
 // `$where array` contains 3 elements: 1) criteria's field name 2) operator 3) criteria's value
 {
