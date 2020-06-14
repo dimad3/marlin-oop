@@ -3,7 +3,7 @@
 class Input
 {
     // L#8 04:00
-    // check whether the form was submited
+    // checks whether the form was submited
     // Returns TRUE if it was and FALSE if it was NOT
     public static function exists($type = 'post') 
     {
@@ -24,7 +24,7 @@ class Input
         If there is a match, the block of code associated with that `case` is executed.
         */
         case 'post':
-            return (!empty($_POST)) ? true : false; // #isset (see forum)
+            return (!empty($_POST)) ? true : false; // !empty is better than isset() (see forum)
         case 'get':
             return (!empty($_GET)) ? true : false;
         

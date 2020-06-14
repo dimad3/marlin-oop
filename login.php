@@ -8,7 +8,7 @@ if(Input::exists()) {
         $validation = new Validate();
 
         // check fields values to meet required parameters
-        $validation->check($_POST, [
+        $validation = $validation->check($_POST, [
             'email' => [
                 'required'=>true,
                 'email'=>true],

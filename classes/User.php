@@ -3,7 +3,7 @@
 class User 
 {
     
-private $db, $data /*stdClass Object*/, $userKey /*string*/, $isLoggedIn /*bool*/, $hashKey;
+private $db, $data /*stdClass Object*/, $userKey /*string*/, $isLoggedIn /*bool*/, $hashKey /*string*/;
 
 public function __construct($user = null) 
 {
@@ -23,16 +23,19 @@ public function __construct($user = null)
         if(Session::exists($this->userKey)) {    // returns boolean
             
             // set `$userId variable` by assigning `userId VALUE` from $_SEESION - returns string 
-            $userIdVal = Session::get($this->userKey); 
-
+            $userId = Session::get($this->userKey); 
+            
             // checks whether `find method` on `User object` returns true
-            if($this->find($userIdVal)) {
+            if($this->find($userId)) {
+            // set `$data property` of the `User Object` as stdClass Object and returns BOOLEAN
+            
                 $this->isLoggedIn = true;  // set `$isLoggedIn property` of the `User Object`
             }
         }
     } else {
         // IF `$user parameter` IS NOT NULL then:
         $this->find($user); // where do we need it till L#15? L#17
+        // set `$data property` of the `User Object` as stdClass Object and returns BOOLEAN
     }
 
 }
@@ -57,8 +60,8 @@ public function login($email = null, string $password = null, bool $remember = f
     // L#17.2 - check whether method's parameters `$email` and `$password` + `$data property` NOT EMPTY
     // L#17.3 0:40
     if(!$email && !$password && $this->exists()) {
-        
-        // if all 3 conditions are met - add new element in $_SEESION[] as userId WITHOUT email & password check
+    // if(!$email) - It's the same as: if((bool)$something != true)
+    // if all 3 conditions are met - add new element in $_SEESION[] as userId WITHOUT email & password check
         Session::put($this->userKey, $this->data()->id);
     } else {
     
@@ -149,22 +152,24 @@ public function data()
 }
 
 
-// L#15 - Returns the `$isLoggedIn property` of `User object` as Bolean
+// L#15 - Returns the `$isLoggedIn property` of `User object` as Boolean
 public function isLoggedIn() {
     return $this->isLoggedIn;
 }
 
 
-// L#16 - Returns the `$isLoggedIn property` of `User object` as Bolean
+/* L#16 - REMOVES user's cookie from db's 'user_sessions' table
+REMOVES elements from the $_SESION[] and $_COOKIE[] global arrays
+Returns nothing */
 public function logout() {
-    // L#17.3 - delete cookie string from db's table
+    // L#17.3 - delete cookie string from db's 'user_sessions' table
     $this->db->delete('user_sessions', ['user_id', '=', $this->data()->id]);
     
-    // L#16 - `login method` ADD element in the $_SESION array
-    // `logout method` REMOVE element from the $_SESION array
+    // L#16 - `login method` ADDS element in the $_SESION array
+    // `logout method` REMOVES element from the $_SESION array
     Session::delete($this->userKey);
     
-    // L#17.3 - REMOVE element from the $_SESION array
+    // L#17.3 - REMOVE element from the $_COOKIE[] global array
     Cookie::delete($this->hashKey);
 }
 
@@ -173,6 +178,22 @@ public function logout() {
 // returns boolean
 public function exists() {
     return (!empty($this->data())) ? true : false;
+}
+
+
+// L#18 - 4:00
+public function update($fields = [], $id = null) {
+    
+    if(!$id && $this->isLoggedIn()) {
+    // if $id is null it means that update is done by logged in user, so
+        // set $id variable
+        $id = $this->data()->id;
+    
+    // if $id is NOT null it means that update is done by Admin who is able to provide his id,
+    // so there NO necessity to do above-mentioned check and id assining
+    }
+    
+    $this->db->update('users', $id, $fields);
 }
 
 }

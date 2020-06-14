@@ -8,16 +8,16 @@ if (Input::exists()) { // true or false
     
     // L#9 05:10 - get a VALUE of a form's field after the form was submited
     // 'token' - the name of the form's field from which to get the VALUE
-    $fieldValue = Input::get('token');
+    $fieldValue = Input::get('token');  // true or false
 
-    // checks whether `form's token value` exists in the `$_SESSION[] array`
+    // check whether `form's token value` exists in the `$_SESSION[] array`
     $tokenExists = Token::check($fieldValue); // true or false
     
     if ($tokenExists == true) { // L#9 
     
-        $validate = new Validate();
+        $validation = new Validate();
 
-        $validation = $validate->check(
+        $validation = $validation->check(
             $_POST,
             [
                 'username' => [                 // field name

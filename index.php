@@ -51,6 +51,7 @@ $user = new User; // WITHOUT parameter (see constructor)!
 if ($user->isLoggedIn()) {
     echo "Hi, {$user->data()->username}";
     echo "<p><a href='logout.php'>Log Out</a></p>";
+    echo "<p><a href='update.php'>Update Profile</a></p>";
 } else {
     echo "<p><a href='login.php'>Log In</a> or <a href='register.php'>Sign In</a></p>";
 }
