@@ -73,11 +73,13 @@ public function login($email = null, string $password = null, bool $remember = f
         if($user) { // if($user == TRUE)
             
             // if $user == TRUE then:
-            // set `$hash variable` assigning the user's password value from table `users` 
+            // set `$user_hash variable` assigning the user's password value from table `users` 
             $user_hash = $this->data()->password;    // returns hash string
             
             // $password - 1-st parameter - form's field `password` value
             if(password_verify($password, $user_hash)) {
+            // Returns TRUE if the password and hash match, or FALSE otherwise
+            
                 // add new element in $_SEESION[] as userId
                 Session::put($this->userKey, $this->data()->id);
 
@@ -192,8 +194,26 @@ public function update($fields = [], $id = null) {
     // if $id is NOT null it means that update is done by Admin who is able to provide his id,
     // so there NO necessity to do above-mentioned check and id assining
     }
-    
     $this->db->update('users', $id, $fields);
+}
+
+
+public function hasPermissions($key = null) {
+
+    if($key) {
+        $group = $this->db->get('groups', ['id', '=', $this->data()->group_id]);
+
+        if($group->count()) {
+            $permissions = $group->first()->permissions;
+            $permissions = json_decode($permissions, true);
+
+            if($permissions[$key]) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 }

@@ -44,14 +44,17 @@ require_once 'init.php';
 // var_dump($_SESSION);
 
 
-// L#15-17 - Проверка авторизации + remember me
+// L#15-19 - Проверка авторизации + remember me
 $user = new User; // WITHOUT parameter (see constructor)!
+
+echo "<p>" . Session::Flash('success') . "</p>";
 
 // checks whether `$isLoggedIn property` of `User object` is true
 if ($user->isLoggedIn()) {
     echo "Hi, {$user->data()->username}";
     echo "<p><a href='logout.php'>Log Out</a></p>";
     echo "<p><a href='update.php'>Update Profile</a></p>";
+    echo "<p><a href='changepassword.php'>Change password</a></p>";
 } else {
     echo "<p><a href='login.php'>Log In</a> or <a href='register.php'>Sign In</a></p>";
 }

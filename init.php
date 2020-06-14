@@ -31,13 +31,13 @@ $GLOBALS['config'] = [ // in init.php
     ],
 
     'session' => [
-        'tokenKey' => 'token',  // L#9 - new element's KEY name in the $_SESSION[] array (forum)
-        'userKey'  => 'userId'  // L#13 - new element's KEY name in the $_SESSION[] array
+        'tokenKey'  => 'token',  // L#9 - new element's KEY name in the $_SESSION[] array (forum)
+        'userKey'   => 'userId'  // L#13 - new element's KEY name in the $_SESSION[] array
     ],
 
     'cookie'    =>  [
         'hashKey'   =>  'hash', // specifies the name of the cookie
-        'expiry' =>  604800  // = 1 week
+        'expiry'    =>  604800  // = 1 week
     ]
 ];
 

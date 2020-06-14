@@ -56,6 +56,14 @@ if (Input::exists()) { // true or false
                 // set fields and its values to be inserted in db
                 'username' => Input::get('username'),
                 'email' =>  Input::get('email'),
+                /*
+                password    Required. The user's password (string)
+                algo        Required. A password algorithm constant denoting the algorithm 
+                            to use when hashing the password.
+                options     Optional. An associative array containing options.
+                            See the password algorithm constants for documentation on 
+                            the supported options for each algorithm. 
+                Returns the hashed password (as string), or FALSE on failure */
                 'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT)
             ]);
             
