@@ -55,6 +55,13 @@ if ($user->isLoggedIn()) {
     echo "<p><a href='logout.php'>Log Out</a></p>";
     echo "<p><a href='update.php'>Update Profile</a></p>";
     echo "<p><a href='changepassword.php'>Change password</a></p>";
+
+    if($user->hasPermissions('moderator')) {
+        echo 'You are moderator';
+    // }  elseif ($user->hasPermissions('moderator')) {
+    //     echo 'You are moderator';
+    };
+
 } else {
     echo "<p><a href='login.php'>Log In</a> or <a href='register.php'>Sign In</a></p>";
 }

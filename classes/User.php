@@ -198,14 +198,31 @@ public function update($fields = [], $id = null) {
 }
 
 
+// L#20 - Parameters: $key Required - string - the key of element in an assotiative array
+// Returns BOOLEAN
 public function hasPermissions($key = null) {
 
-    if($key) {
+    if($key) {  // if(isset($key))
         $group = $this->db->get('groups', ['id', '=', $this->data()->group_id]);
+        // Returns Database Object
 
-        if($group->count()) {
-            $permissions = $group->first()->permissions;
-            $permissions = json_decode($permissions, true);
+        if($group->count()) {   // $group->count() >0
+            // set `$permissions variable` assigning the value from `permissions field` of related record (`groups` table)
+            $permissions = $group->first()->permissions;    // returns string
+            
+            /* JSON Objects - https://www.w3schools.com/js/js_json_objects.asp
+            json_decode() function is used to decode or convert a JSON object to a PHP object
+            Parameters:
+            string	Required. Specifies the value to be encoded
+            assoc	Optional. Specifies a Boolean value. When set to true, the returned object will be converted 
+                    into an associative array. When set to false, it returns an object. False is default
+            depth	Optional. Specifies the recursion depth. Default recursion depth is 512
+            options	Optional. Specifies a bitmask (JSON_BIGINT_AS_STRING, JSON_INVALID_UTF8_IGNORE, 
+                    JSON_INVALID_UTF8_SUBSTITUTE, JSON_OBJECT_AS_ARRAY, JSON_THROW_ON_ERROR)
+            Returns:
+            The value encoded in JSON in appropriate PHP type. If the JSON object cannot be decoded it returns NULL
+            */
+            $permissions = json_decode($permissions, true); // if 2-nd parameter is true -> returns array
 
             if($permissions[$key]) {
                 return true;
